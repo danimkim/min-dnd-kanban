@@ -10,7 +10,7 @@ export const initialCards: Card[] = [
   },
   {
     id: '2',
-    title: 'Review proejct structure',
+    title: 'Review project structure',
     status: 'todo',
     priority: 'mid',
     dueDate: new Date().toISOString().split('T')[0],
