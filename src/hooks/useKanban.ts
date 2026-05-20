@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { initialCards } from '../data/initialData';
-import type { Card } from '../types';
+import type { CardType } from '../types';
 
 export function useKanban() {
-  const [cards, setCards] = useState<Card[]>(initialCards);
+  const [cards, setCards] = useState<CardType[]>(initialCards);
 
-  const addCard = (card: Card) => setCards((prev) => [...prev, card]);
+  const addCard = (card: CardType) => setCards((prev) => [...prev, card]);
 
-  const deleteCard = ({ id }: Pick<Card, 'id'>) =>
+  const deleteCard = ({ id }: Pick<CardType, 'id'>) =>
     setCards((prev) => prev.filter((card) => card.id !== id));
 
-  const moveCard = ({ id, status }: Pick<Card, 'id' | 'status'>) => {
+  const moveCard = ({ id, status }: Pick<CardType, 'id' | 'status'>) => {
     setCards((prev) => {
       return prev.map((card) =>
         card.id === id

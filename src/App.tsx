@@ -1,11 +1,13 @@
 import './App.css';
+import Board from './components/Board';
 
 function App() {
   return (
     <>
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <h1 className="text-3xl font-bold text-blue-500">Kanban 🎉</h1>
+      <div>
+        <h1 className="text-3xl font-bold text-blue-500">Kanban Board🎉</h1>
       </div>
+      <Board />
     </>
   );
 }

@@ -1,7 +1,7 @@
 export type TodoStatus = 'todo' | 'inProgress' | 'done';
 export type Priority = 'low' | 'mid' | 'high';
 
-export type Card = {
+export type CardType = {
   id: string;
   title: string;
   dueDate: string;
@@ -12,5 +12,7 @@ export type Card = {
 export type ColumnData = {
   id: TodoStatus;
   title: string;
-  cards: Card[];
+  cards: CardType[];
 };
+
+export type ColumnType = { id: TodoStatus; title: string };
