@@ -1,11 +1,22 @@
-import { initialCards } from '../data/initialData';
+import { useState } from 'react';
 import type { CardType, ColumnType } from '../types';
 import Card from './Card';
+import AddCardForm from './AddCardForm';
 
-export default function Column(props: ColumnType) {
-  const { id, title } = props;
+interface Props {
+  column: ColumnType;
+  cards: CardType[];
+}
 
-  const filteredCards = initialCards.filter((card: CardType) => card.status === id);
+export default function Column({ column, cards }: Props) {
+  const [open, setOpen] = useState(false);
+  const { id, title } = column;
+
+  const filteredCards = cards.filter((card: CardType) => card.status === id);
+
+  const handleNewCardForm = {
+    toggleForm: () => setOpen((prev) => !prev),
+  };
 
   return (
     <section className="border-red-400 border">
@@ -15,6 +26,11 @@ export default function Column(props: ColumnType) {
       {filteredCards.map((card: CardType) => (
         <Card key={card.id} {...card} />
       ))}
+      {!open ? (
+        <button onClick={() => setOpen((prev) => !prev)}>Add new card</button>
+      ) : (
+        <AddCardForm formHandler={handleNewCardForm} status={column.id} />
+      )}
     </section>
   );
 }

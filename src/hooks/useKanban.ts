@@ -22,5 +22,5 @@ export function useKanban() {
       );
     });
   };
-  return { addCard, deleteCard, moveCard };
+  return { addCard, deleteCard, moveCard, cards };
 }
