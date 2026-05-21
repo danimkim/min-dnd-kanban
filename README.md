@@ -1,7 +1,5 @@
 # Mini Kanban Board
 
-# Mini Kanban Board
-
 A lightweight Kanban board built with React and TypeScript, featuring drag-and-drop card management and REST API integration.
 
 ## Features
