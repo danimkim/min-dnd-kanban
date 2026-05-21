@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useKanban } from '../hooks/useKanban';
+
 import type { CardType, Priority, TodoStatus } from '../types';
+import { useKanbanContext } from '../contexts/KanbanContext';
 
 interface Props {
   formHandler: {
@@ -10,29 +11,33 @@ interface Props {
 }
 
 export default function AddCardForm({ formHandler, status }: Props) {
+  const { addCard } = useKanbanContext();
   const { toggleForm } = formHandler;
 
   const initialFormdata: CardType = {
-    id: '5',
+    id: '',
     title: '',
     dueDate: '',
     priority: 'low',
     status: 'todo',
   };
 
-  const { addCard } = useKanban();
   const [formData, setFormData] = useState<CardType>(initialFormdata);
 
-  const handleSubmit = (e: React.SubmitEvent) => {
-    e.preventDefault();
-    // TODO: generate random id
-    setFormData((prev) => ({
-      ...prev,
-      status,
-    }));
-    console.log(formData);
+  const resetFormData = () => setFormData(initialFormdata);
 
-    addCard(formData);
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const newFormData = {
+      ...formData,
+      id: crypto.randomUUID(),
+      status,
+    };
+
+    addCard(newFormData);
+    resetFormData();
+    toggleForm();
   };
 
   return (
@@ -67,9 +72,9 @@ export default function AddCardForm({ formHandler, status }: Props) {
           }))
         }
       >
-        <option value="">Low</option>
-        <option value="">Mid</option>
-        <option value="">High</option>
+        <option value="low">Low</option>
+        <option value="mid">Mid</option>
+        <option value="high">High</option>
       </select>
       <button type="submit">Add</button>
       <button onClick={toggleForm}>🆇</button>

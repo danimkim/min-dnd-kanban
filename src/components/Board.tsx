@@ -1,12 +1,9 @@
 import { COLUMNS } from '../constants';
-import type { CardType } from '../types';
+import { useKanbanContext } from '../contexts/KanbanContext';
 import Column from './Column';
 
-interface Props {
-  cards: CardType[];
-}
-
-export default function Board({ cards }: Props) {
+export default function Board() {
+  const { cards } = useKanbanContext();
   return (
     <div className="border-slate-600 border-4">
       {COLUMNS.map((column) => (

@@ -1,17 +1,15 @@
 import './App.css';
 import Board from './components/Board';
-import { useKanban } from './hooks/useKanban';
+import { KanbanProvider } from './contexts/KanbanContext';
 
 function App() {
-  const { cards } = useKanban();
-
   return (
-    <>
+    <KanbanProvider>
       <div>
         <h1 className="text-3xl font-bold text-blue-500">Kanban Board🎉</h1>
       </div>
-      <Board cards={cards} />
-    </>
+      <Board />
+    </KanbanProvider>
   );
 }
 
