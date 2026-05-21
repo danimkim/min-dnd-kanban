@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { CardType, ColumnType } from '../types';
 import Card from './Card';
 import AddCardForm from './AddCardForm';
+import { useDroppable } from '@dnd-kit/react';
 
 interface Props {
   column: ColumnType;
@@ -10,6 +11,7 @@ interface Props {
 
 export default function Column({ column, cards }: Props) {
   const [open, setOpen] = useState(false);
+  const { isDropTarget, ref } = useDroppable({ id: column.id });
   const { id, title } = column;
 
   const filteredCards = cards.filter((card: CardType) => card.status === id);
@@ -19,7 +21,7 @@ export default function Column({ column, cards }: Props) {
   };
 
   return (
-    <section className="border-red-400 border">
+    <section ref={ref} className="border-red-400 border">
       <header>
         <h2>{title}</h2>
       </header>
