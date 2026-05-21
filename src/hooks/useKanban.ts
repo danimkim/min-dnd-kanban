@@ -53,17 +53,21 @@ export function useKanban() {
     }
   };
 
-  const moveCard = ({ id, status }: { id: string; status: TodoStatus }) => {
-    setCards((prev) => {
-      return prev.map((card) =>
-        card.id === id
-          ? {
-              ...card,
-              status,
-            }
-          : card
-      );
-    });
+  const moveCard = async ({ id, status }: { id: string; status: TodoStatus }) => {
+    const previousCards = cards;
+    const updatedCard = cards.find((card) => card.id === id);
+    if (!updatedCard) return;
+
+    setCards((prev) =>
+      prev.map((card) => (card.id === id ? { ...card, status } : card))
+    );
+
+    try {
+      await api.put<CardType>(`/cards/${id}`, { ...updatedCard, status });
+    } catch (err) {
+      setCards(previousCards);
+      console.error(err);
+    }
   };
   return { addCard, deleteCard, moveCard, cards };
 }

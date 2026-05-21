@@ -26,6 +26,20 @@ const api = {
 
     return response.json();
   },
+  put: async <T>(endpoint: string, body: CardType): Promise<T> => {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) {
+      throw new Error(`PUT ${endpoint} failed: ${response.status}`);
+    }
+
+    return response.json();
+  },
   delete: async (endpoint: string, id: string): Promise<void> => {
     const response = await fetch(`${BASE_URL}${endpoint}/${id}`, {
       method: 'DELETE',
