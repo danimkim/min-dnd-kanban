@@ -1,9 +1,31 @@
-import { useState } from 'react';
-import { initialCards } from '../data/initialData';
+import { useEffect, useState } from 'react';
 import type { CardType, TodoStatus } from '../types';
+import api from '../lib/api';
 
 export function useKanban() {
-  const [cards, setCards] = useState<CardType[]>(initialCards);
+  const [cards, setCards] = useState<CardType[]>([]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    /** get initial data from api */
+    const loadInitialData = async () => {
+      try {
+        const res = await api.get<CardType[]>('/cards');
+        if (isMounted && res) {
+          setCards(res);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadInitialData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const addCard = (card: CardType) => setCards((prev) => [...prev, card]);
 
