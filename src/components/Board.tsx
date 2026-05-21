@@ -25,7 +25,7 @@ export default function Board() {
 
   return (
     <DragDropProvider onDragEnd={onDragEnd}>
-      <div className="border-slate-600 border-4">
+      <div className="flex gap-4 items-start">
         {COLUMNS.map((column) => (
           <Column key={column.id} column={column} cards={cards} />
         ))}
