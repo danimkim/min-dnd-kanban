@@ -1,24 +1,41 @@
 import { useDraggable } from '@dnd-kit/react';
 import { useKanbanContext } from '../contexts/KanbanContext';
-import type { CardType } from '../types';
+import type { CardType, Priority } from '../types';
+
+const priorityDot: Record<Priority, string> = {
+  high: 'bg-red-400',
+  mid: 'bg-amber-400',
+  low: 'bg-emerald-400',
+};
 
 export default function Card(props: CardType) {
   const { deleteCard } = useKanbanContext();
   const { title, dueDate, priority } = props;
-  const { ref } = useDraggable({
-    id: props.id,
-  });
+  const { ref, isDragging } = useDraggable({ id: props.id });
 
   return (
-    <article ref={ref}>
-      <header>
-        <h3>{title}</h3>
+    <article
+      ref={ref}
+      className={`group bg-white rounded-lg shadow-sm border border-gray-100 p-3 cursor-grab transition-all duration-150 ${
+        isDragging ? 'shadow-lg rotate-1 opacity-90' : ''
+      }`}
+    >
+      <header className="flex items-start justify-between gap-2">
+        <h3 className="text-sm font-medium text-gray-800 leading-snug">{title}</h3>
+        <button
+          onClick={() => deleteCard(props.id)}
+          className="opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-400 transition-opacity duration-150 text-xs shrink-0"
+          aria-label="Delete card"
+        >
+          ✕
+        </button>
       </header>
-      <footer>
-        <time>{dueDate}</time>
-        <span>{priority}</span>
+      <footer className="flex items-center gap-2 mt-2">
+        <span className={`w-2 h-2 rounded-full shrink-0 ${priorityDot[priority]}`} />
+        {dueDate && (
+          <time className="text-xs text-gray-400">📅 {dueDate}</time>
+        )}
       </footer>
-      <button onClick={() => deleteCard(props.id)}>🆇</button>
     </article>
   );
 }
