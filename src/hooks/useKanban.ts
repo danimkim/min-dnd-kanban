@@ -27,9 +27,24 @@ export function useKanban() {
     };
   }, []);
 
-  const addCard = (card: CardType) => setCards((prev) => [...prev, card]);
+  const addCard = async (formData: CardType) => {
+    const { id, title, status, priority, dueDate } = formData;
 
-  const deleteCard = (id: string) => setCards((prev) => prev.filter((card) => card.id !== id));
+    setCards((prev) => [...prev, formData]);
+
+    try {
+      await api.post<CardType>('/cards', { id, title, status, priority, dueDate });
+    } catch (err) {
+      setCards((prev) => prev.filter((card) => card.id !== formData.id));
+      console.error(err);
+    }
+  };
+
+  // const deleteCard = (id: string) => setCards((prev) => prev.filter((card) => card.id !== id));
+  const deleteCard = async (id: string) => {
+    const res = await api.delete('/cards', id);
+    return res;
+  };
 
   const moveCard = ({ id, status }: { id: string; status: TodoStatus }) => {
     setCards((prev) => {
