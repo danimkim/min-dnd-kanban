@@ -40,10 +40,17 @@ export function useKanban() {
     }
   };
 
-  // const deleteCard = (id: string) => setCards((prev) => prev.filter((card) => card.id !== id));
   const deleteCard = async (id: string) => {
-    const res = await api.delete('/cards', id);
-    return res;
+    const previousCards = cards;
+
+    setCards((prev) => prev.filter((card) => card.id !== id));
+
+    try {
+      await api.delete('/cards', id);
+    } catch (err) {
+      setCards(previousCards);
+      console.error(err);
+    }
   };
 
   const moveCard = ({ id, status }: { id: string; status: TodoStatus }) => {
