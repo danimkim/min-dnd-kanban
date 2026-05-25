@@ -35,7 +35,7 @@ export default function Column({ column, cards }: Props) {
       </header>
       <div className="flex flex-col gap-2 flex-1">
         {filteredCards.map((card: CardType) => (
-          <Card key={card.id} {...card} />
+          <Card key={card.id} {...card} todoStatus={title} />
         ))}
       </div>
       {!open ? (

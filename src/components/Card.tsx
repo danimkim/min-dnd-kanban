@@ -8,10 +8,23 @@ const priorityDot: Record<Priority, string> = {
   low: 'bg-emerald-400',
 };
 
-export default function Card(props: CardType) {
+interface Props extends CardType {
+  todoStatus: string;
+}
+
+export default function Card(props: Props) {
   const { deleteCard } = useKanbanContext();
-  const { title, dueDate, priority } = props;
+  const { title, dueDate, priority, todoStatus } = props;
   const { ref, isDragging } = useDraggable({ id: props.id });
+
+  const today = new Date();
+  const hasDuePassed = new Date(dueDate) < today;
+
+  const dueDateColor = hasDuePassed
+    ? todoStatus === 'Done'
+      ? 'text-gray-400'
+      : 'text-red-400'
+    : 'text-gray-400';
 
   return (
     <article
@@ -32,9 +45,7 @@ export default function Card(props: CardType) {
       </header>
       <footer className="flex items-center gap-2 mt-2">
         <span className={`w-2 h-2 rounded-full shrink-0 ${priorityDot[priority]}`} />
-        {dueDate && (
-          <time className="text-xs text-gray-400">📅 {dueDate}</time>
-        )}
+        {dueDate && <time className={`text-xs ${dueDateColor}`}>📅 {dueDate}</time>}
       </footer>
     </article>
   );
