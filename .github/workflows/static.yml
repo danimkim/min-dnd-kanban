@@ -37,6 +37,8 @@ jobs:
           node-version: '26.x'
       - name: Install dependencies
         run: yarn install
+      - name: Build
+        run: yarn build
       - name: Run linters
         uses: wearerequired/lint-action@v2
         with:
@@ -46,8 +48,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          # Upload Vite build output
+          path: 'dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
