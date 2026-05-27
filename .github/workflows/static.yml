@@ -39,6 +39,8 @@ jobs:
         run: yarn install
       - name: Build
         run: yarn build
+      - name: Create .env file
+        run: echo "VITE_API_URL=${{secrets.VITE_API_URL}}" > dist/.env
       - name: Run linters
         uses: wearerequired/lint-action@v2
         with:
